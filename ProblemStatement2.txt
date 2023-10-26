@@ -1,0 +1,277 @@
+2. Create a C#.Net Console application to implement multiple inheritance with multiple
+interfaces. Define a BankAccount class which implements ISavingsAccount,
+ICurrentAccount, IGoldLoanAccount interfaces. Each interface has a specific method
+signature to calculate Interest.
+Implement all Interface methods in the BankAccount class.Create user interface in
+the program class main(). Define a menu to calculate interest of a specific account
+type and display the same.
+
+solution:
+
+program.cs:
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Select an account type:");
+        Console.WriteLine("1. Savings Account");
+        Console.WriteLine("2. Current Account");
+        Console.WriteLine("3. Gold Loan Account");
+        int accountTypeChoice = Convert.ToInt32(Console.ReadLine());
+
+        switch (accountTypeChoice)
+        {
+            case 1:
+                Console.Write("Enter initial balance for Savings Account: ");
+                double savingsInitialBalance = Convert.ToDouble(Console.ReadLine());
+                SavingsAccount savingsAccount = new SavingsAccount(savingsInitialBalance);
+                PerformSavingsAccountActions(savingsAccount);
+                break;
+            case 2:
+                Console.Write("Enter initial balance for Current Account: ");
+                double currentInitialBalance = Convert.ToDouble(Console.ReadLine());
+                CurrentAccount currentAccount = new CurrentAccount(currentInitialBalance);
+                PerformCurrentAccountActions(currentAccount);
+                break;
+            case 3:
+                Console.Write("Enter initial loan amount for Gold Loan Account: ");
+                double goldLoanInitialAmount = Convert.ToDouble(Console.ReadLine());
+                GoldLoanAccount goldLoanAccount = new GoldLoanAccount(goldLoanInitialAmount);
+                PerformGoldLoanAccountActions(goldLoanAccount);
+                break;
+            default:
+                Console.WriteLine("Invalid choice!");
+                break;
+        }
+    }
+
+    static void PerformSavingsAccountActions(SavingsAccount account)
+    {
+        Console.WriteLine("Savings Account Actions:");
+        Console.WriteLine("1. Calculate Interest");
+        Console.WriteLine("2. Deposit");
+        Console.WriteLine("3. Withdraw");
+        int action = Convert.ToInt32(Console.ReadLine());
+
+        switch (action)
+        {
+            case 1:
+                double interest = account.CalculateInterest();
+                Console.WriteLine($"Interest calculated: {interest}");
+                break;
+            case 2:
+                Console.Write("Enter deposit amount: ");
+                double depositAmount = Convert.ToDouble(Console.ReadLine());
+                account.Deposit(depositAmount);
+                break;
+            case 3:
+                Console.Write("Enter withdrawal amount: ");
+                double withdrawalAmount = Convert.ToDouble(Console.ReadLine());
+                account.Withdraw(withdrawalAmount);
+                break;
+            default:
+                Console.WriteLine("Invalid action!");
+                break;
+        }
+    }
+
+    static void PerformCurrentAccountActions(CurrentAccount account)
+    {
+        Console.WriteLine("Current Account Actions:");
+        Console.WriteLine("1. Calculate Interest");
+        Console.WriteLine("2. Deposit");
+        Console.WriteLine("3. Withdraw");
+        int action = Convert.ToInt32(Console.ReadLine());
+
+        switch (action)
+        {
+            case 1:
+                double interest = account.CalculateInterest();
+                Console.WriteLine($"Interest calculated: {interest}");
+                break;
+            case 2:
+                Console.Write("Enter deposit amount: ");
+                double depositAmount = Convert.ToDouble(Console.ReadLine());
+                account.Deposit(depositAmount);
+                break;
+            case 3:
+                Console.Write("Enter withdrawal amount: ");
+                double withdrawalAmount = Convert.ToDouble(Console.ReadLine());
+                account.Withdraw(withdrawalAmount);
+                break;
+            default:
+                Console.WriteLine("Invalid action!");
+                break;
+        }
+    }
+
+    static void PerformGoldLoanAccountActions(GoldLoanAccount account)
+    {
+        Console.WriteLine("Gold Loan Account Actions:");
+        Console.WriteLine("1. Calculate Interest");
+        Console.WriteLine("2. Make Payment");
+        int action = Convert.ToInt32(Console.ReadLine());
+
+        switch (action)
+        {
+            case 1:
+                double interest = account.CalculateInterest();
+                Console.WriteLine($"Interest calculated: {interest}");
+                break;
+            case 2:
+                Console.Write("Enter payment amount: ");
+                double paymentAmount = Convert.ToDouble(Console.ReadLine());
+                account.MakePayment(paymentAmount);
+                break;
+            default:
+                Console.WriteLine("Invalid action!");
+                break;
+        }
+    }
+}
+__________________________________________________________________________________________________
+SavingsAccount.cs:
+
+using System;
+
+interface ISavingsAccount
+{
+    double CalculateInterest();
+    void Deposit(double amount);
+    void Withdraw(double amount);
+}
+
+class SavingsAccount : ISavingsAccount
+{
+    public double Balance { get; private set; }
+
+    public SavingsAccount(double initialBalance)
+    {
+        Balance = initialBalance;
+    }
+
+    public double CalculateInterest()
+    {
+        double annualInterestRate = 0.02; // 2%
+        return Balance * annualInterestRate;
+    }
+
+    public void Deposit(double amount)
+    {
+        if (amount <= 0)
+        {
+            Console.WriteLine("Invalid deposit amount. Please enter a positive value.");
+            return;
+        }
+
+        Balance += amount;
+        Console.WriteLine($"Successfully deposited {amount}. New balance: {Balance}");
+    }
+
+    public void Withdraw(double amount)
+    {
+        if (amount <= 0 || amount > Balance)
+        {
+            Console.WriteLine("Invalid withdrawal amount. Please enter a valid value.");
+            return;
+        }
+
+        Balance -= amount;
+        Console.WriteLine($"Successfully withdrew {amount}. New balance: {Balance}");
+    }
+}
+
+__________________________________________________________________________________________________
+CurrentAccount.cs:
+
+using System;
+
+interface ICurrentAccount
+{
+    double CalculateInterest();
+    void Deposit(double amount);
+    void Withdraw(double amount);
+}
+
+class CurrentAccount : ICurrentAccount
+{
+    public double Balance { get; private set; }
+
+    public CurrentAccount(double initialBalance)
+    {
+        Balance = initialBalance;
+    }
+
+    public double CalculateInterest()
+    {
+        double annualInterestRate = 0.01; // 1%
+        return Balance * annualInterestRate;
+    }
+
+    public void Deposit(double amount)
+    {
+        if (amount <= 0)
+        {
+            Console.WriteLine("Invalid deposit amount. Please enter a positive value.");
+            return;
+        }
+
+        Balance += amount;
+        Console.WriteLine($"Successfully deposited {amount}. New balance: {Balance}");
+    }
+
+    public void Withdraw(double amount)
+    {
+        if (amount <= 0 || amount > Balance)
+        {
+            Console.WriteLine("Invalid withdrawal amount. Please enter a valid value.");
+            return;
+        }
+
+        Balance -= amount;
+        Console.WriteLine($"Successfully withdrew {amount}. New balance: {Balance}");
+    }
+}
+
+__________________________________________________________________________________________________
+GoldLoanAccount.cs:
+
+using System;
+
+interface IGoldLoanAccount
+{
+    double CalculateInterest();
+    void MakePayment(double amount);
+}
+
+class GoldLoanAccount : IGoldLoanAccount
+{
+    public double LoanAmount { get; private set; }
+
+    public GoldLoanAccount(double initialLoanAmount)
+    {
+        LoanAmount = initialLoanAmount;
+    }
+
+    public double CalculateInterest()
+    {
+        double annualInterestRate = 0.05; // 5%
+        return LoanAmount * annualInterestRate;
+    }
+
+    public void MakePayment(double amount)
+    {
+        if (amount <= 0 || amount > LoanAmount)
+        {
+            Console.WriteLine("Invalid payment amount. Please enter a valid value.");
+            return;
+        }
+
+        LoanAmount -= amount;
+        Console.WriteLine($"Successfully made a payment of {amount}. Remaining loan amount: {LoanAmount}");
+    }
+}
+
+__________________________________________________________________________________________________
